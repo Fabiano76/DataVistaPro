@@ -17,10 +17,19 @@
         header{text-align:center;margin-bottom:60px;animation:fadeInDown .8s ease-out}
         h1{font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:#fff;text-shadow:2px 4px 12px rgba(0,0,0,.2);margin-bottom:12px;letter-spacing:-2px}
         .tagline{font-size:20px;color:rgba(255,255,255,.9);font-weight:500;letter-spacing:.5px}
-        .main-grid{display:grid;grid-template-columns:340px 1fr;gap:30px;animation:fadeInUp .8s ease-out .2s backwards}
-        .sidebar{background:#fff;border-radius:24px;padding:36px;box-shadow:0 20px 60px rgba(0,0,0,.15);height:fit-content;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto}
-        .sidebar::-webkit-scrollbar{width:8px}.sidebar::-webkit-scrollbar-track{background:var(--surface);border-radius:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}.sidebar::-webkit-scrollbar-thumb:hover{background:var(--text-light)}
-        .content-area{min-height:600px}
+        .main-grid{display:flex;flex-direction:column;gap:30px;animation:fadeInUp .8s ease-out .2s backwards}
+        .content-area{min-height:200px}
+        .settings-panel{background:#fff;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;margin-bottom:0}
+        .settings-panel-header{display:flex;align-items:center;justify-content:space-between;padding:16px 30px;background:var(--secondary);color:#fff;cursor:pointer;user-select:none}
+        .settings-panel-header:hover{background:#273548}
+        .settings-panel-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+        .settings-panel-title .sp-icon{font-size:20px}
+        .settings-panel-toggle{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;transition:transform .3s ease;padding:4px}
+        .settings-panel-toggle.collapsed{transform:rotate(-90deg)}
+        .settings-panel-body{padding:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+        .settings-panel-body.collapsed{display:none}
+        .settings-panel-body.single-col{grid-template-columns:1fr}
+        .settings-section{min-width:0}
         .section-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--primary);margin-bottom:20px;position:relative;padding-bottom:12px}
         .section-title::after{content:'';position:absolute;bottom:0;left:0;width:50px;height:3px;background:var(--accent);border-radius:2px}
         .upload-zone{border:3px dashed var(--border);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .3s ease;background:var(--surface);margin-bottom:24px}
@@ -67,9 +76,47 @@
         .remove-panel-btn:hover{background:var(--error)}
         .analysis-panel-body{padding:30px}.analysis-panel-body.collapsed{display:none}
         .config-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:20px}.config-row .form-group{margin-bottom:0}
+        .config-section{background:var(--surface);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--border)}
+        .config-section-label{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+        .config-section-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+        .config-section-grid .form-group{margin-bottom:0}
+        .config-section-row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+        .config-section-row .form-group{flex:1;min-width:140px;margin-bottom:0}
         .run-analysis-btn{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s ease;font-family:'Work Sans',sans-serif;box-shadow:0 4px 12px rgba(245,158,11,.3);display:inline-flex;align-items:center;gap:8px}
         .run-analysis-btn:hover{background:#d97706;transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,158,11,.4)}
         .analysis-divider{border:none;border-top:2px solid var(--border);margin:24px 0}
+        .custom-kpi-builder{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:16px;margin-top:8px;animation:fadeIn .3s ease}
+        .custom-kpi-builder .form-label{margin-bottom:6px}
+        .kpi-formula-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+        .kpi-formula-row select,.kpi-formula-row input{flex:1;min-width:0}
+        .kpi-op-select{flex:0 0 60px !important;min-width:60px !important;text-align:center;font-weight:700;font-size:16px}
+        .kpi-name-row{display:flex;gap:8px;align-items:center}
+        .kpi-name-row input{flex:1}
+        .kpi-preview{font-size:12px;color:var(--text-light);margin-top:8px;font-style:italic;padding:6px 10px;background:#fff;border-radius:6px;border:1px solid var(--border)}
+        .kpi-add-step{background:none;border:1px dashed var(--border);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--text-light);cursor:pointer;font-family:'Work Sans',sans-serif;transition:all .2s ease;margin-top:4px}
+        .kpi-add-step:hover{border-color:var(--accent);color:var(--accent)}
+        .kpi-step{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+        .kpi-step select,.kpi-step input{flex:1;min-width:0}
+        .kpi-remove-step{background:var(--error);color:#fff;border:none;border-radius:4px;width:24px;height:24px;font-size:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+        .insights-mode-toggle{display:flex;gap:0;margin-bottom:16px;border:2px solid var(--border);border-radius:8px;overflow:hidden}
+        .insights-mode-btn{flex:1;padding:8px 12px;border:none;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Work Sans',sans-serif;color:var(--text-light);transition:all .2s ease;text-align:center}
+        .insights-mode-btn.active{background:var(--primary);color:#fff}
+        .insights-mode-btn:hover:not(.active){background:var(--surface)}
+
+        .custom-questions-area{margin-bottom:20px}
+        .custom-questions-area .form-label{margin-bottom:10px;display:flex;align-items:center;gap:6px}
+        .question-slot{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+        .question-slot-number{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+        .question-slot input{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:'Work Sans',sans-serif;color:var(--text);transition:all .3s ease}
+        .question-slot input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,158,11,.1)}
+        .question-slot input::placeholder{color:var(--text-light)}
+
+        .qa-answer-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;position:relative}
+        .qa-answer-question{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+        .qa-answer-text{font-size:14px;line-height:1.7;color:var(--text)}
+        .qa-answer-loading{display:flex;align-items:center;gap:10px;color:var(--text-light);font-size:13px}
+        .qa-spinner{width:18px;height:18px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
         .result-empty{text-align:center;padding:40px 20px;color:var(--text-light);font-size:14px}
         .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
         .result-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--primary)}
@@ -94,31 +141,175 @@
         .empty-state{background:#fff;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.15);text-align:center;padding:80px 40px;color:var(--text-light)}
         .empty-icon{font-size:64px;margin-bottom:20px;opacity:.3}.empty-text{font-size:18px;font-weight:500}
         .loading-inline{text-align:center;padding:40px}
+
+        .panel-mode-toggle{display:flex;gap:0;margin-bottom:20px;border:2px solid var(--border);border-radius:10px;overflow:hidden}
+        .panel-mode-btn{flex:1;padding:10px 16px;border:none;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Work Sans',sans-serif;color:var(--text-light);transition:all .2s ease;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px}
+        .panel-mode-btn.active{background:var(--primary);color:#fff}
+        .panel-mode-btn:hover:not(.active){background:var(--surface)}
+
+        .exec-summary-body{padding:4px 0}
+        .exec-summary-note{font-size:13px;color:var(--text-light);margin-bottom:16px;line-height:1.5}
+        .exec-summary-config{margin-bottom:16px}
+        .exec-summary-sources{background:var(--surface);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+        .exec-summary-sources-title{font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+        .exec-source-tag{display:inline-block;background:#fff;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:12px;color:var(--text);margin:2px 4px 2px 0}
+        .exec-source-tag.has-data{border-color:var(--success);color:var(--success)}
+        .exec-source-tag.no-data{border-color:var(--border);color:var(--text-light)}
+        .exec-summary-result{animation:fadeIn .4s ease}
+        .exec-summary-bullet{padding:16px 18px;background:var(--surface);border-left:4px solid #8b5cf6;border-radius:8px;margin-bottom:12px;font-size:14px;line-height:1.7;color:var(--text);transition:all .3s ease}
+        .exec-summary-bullet:hover{transform:translateX(4px);box-shadow:0 4px 12px rgba(0,0,0,.05)}
+
+        .uploaded-files-list{margin-bottom:16px}
+        .uploaded-file-item{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;transition:all .2s ease}
+        .uploaded-file-item.active{border-color:var(--success);background:#f0fdf4}
+        .uploaded-file-item .file-icon{font-size:18px;flex-shrink:0}
+        .uploaded-file-item .file-details{flex:1;min-width:0}
+        .uploaded-file-item .file-name{font-weight:600;color:var(--primary);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .uploaded-file-item .file-meta{font-size:11px;color:var(--text-light)}
+        .uploaded-file-item .file-remove{background:none;border:none;color:var(--text-light);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:all .2s ease}
+        .uploaded-file-item .file-remove:hover{color:var(--error);background:rgba(239,68,68,.1)}
+        .file-num-badge{background:var(--primary);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;flex-shrink:0;letter-spacing:.5px}
+
+        .join-section{background:var(--surface);border-radius:12px;padding:20px;margin-bottom:16px;border:2px solid var(--border)}
+        .join-section.joined{border-color:var(--success)}
+        .join-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+        .join-title{font-size:14px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:6px}
+        .join-subtitle{font-size:12px;color:var(--text-light);margin-top:2px;font-weight:400}
+        .join-step{margin-bottom:18px}
+        .join-step-label{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .join-step-label .step-num{background:var(--accent);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px}
+        .join-files-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end}
+        .join-arrow{text-align:center;font-size:18px;color:var(--accent);padding-bottom:8px}
+        .join-match-hint{font-size:11px;color:var(--success);margin-top:6px;display:none}
+        .join-match-hint.show{display:block}
+        .join-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+        .join-type-card{border:2px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s ease;background:#fff;text-align:center}
+        .join-type-card:hover{border-color:var(--accent);background:#fffbeb}
+        .join-type-card.selected{border-color:var(--accent);background:#fffbeb;box-shadow:0 2px 8px rgba(245,158,11,.15)}
+        .join-type-card-icon{font-size:24px;margin-bottom:4px}
+        .join-type-card-name{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:2px}
+        .join-type-card-desc{font-size:11px;color:var(--text-light);line-height:1.4}
+        .join-type-card-rec{font-size:10px;color:var(--accent);font-weight:600;margin-top:4px}
+        .join-btn{background:var(--accent);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Work Sans',sans-serif;transition:all .3s ease;width:100%;box-shadow:0 4px 12px rgba(245,158,11,.3)}
+        .join-btn:hover{background:#d97706;transform:translateY(-1px);box-shadow:0 6px 16px rgba(245,158,11,.4)}
+        .join-status{font-size:12px;padding:10px 14px;border-radius:8px;margin-top:10px}
+        .join-status.success{background:#f0fdf4;color:#059669;border:1px solid #86efac}
+        .join-status.error{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5}
+        .join-reset-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--text-light);cursor:pointer;font-family:'Work Sans',sans-serif}
+        .join-reset-btn:hover{border-color:var(--error);color:var(--error)}
         .spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
         .loading-text{font-size:14px;color:var(--text-light);font-weight:500}
         @keyframes fadeInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes spin{to{transform:rotate(360deg)}}
-        @media(max-width:1024px){.main-grid{grid-template-columns:1fr}.sidebar{position:static;max-height:none}h1{font-size:48px}.config-row{grid-template-columns:1fr 1fr}}
-        @media(max-width:640px){.config-row{grid-template-columns:1fr}}
+        @media(max-width:1024px){h1{font-size:48px}.config-row{grid-template-columns:1fr 1fr}.settings-panel-body{grid-template-columns:1fr}}
+        @media(max-width:640px){.config-row{grid-template-columns:1fr}.settings-panel-body{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
     <div class="container">
         <header><h1>DataVista Pro</h1><p class="tagline">Flexible data analysis with unlimited possibilities</p></header>
         <div class="main-grid">
-            <div class="sidebar">
-                <h2 class="section-title">Upload Data</h2>
-                <div class="upload-zone" id="uploadZone"><div class="upload-icon">📊</div><div class="upload-text">Drop your file here</div><div class="upload-subtext">or click to browse</div><input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.txt"></div>
-                <div class="file-info" id="fileInfo"><span class="file-icon">📄</span><div class="file-details"><div class="file-name" id="fileName"></div><div class="file-size" id="fileSize"></div></div></div>
-                <div id="filtersSection" style="display:none"><h2 class="section-title">Data Filters</h2><div class="filters-section" id="filtersContainer"></div></div>
-                <div id="exportSection" style="display:none">
-                    <div class="format-selector"><label class="form-label">Export Format</label><div class="format-options"><div class="format-option" data-format="pptx"><div class="format-icon">📊</div><div class="format-name">PowerPoint</div></div><div class="format-option selected" data-format="pdf"><div class="format-icon">📄</div><div class="format-name">PDF</div></div></div></div>
-                    <button class="btn btn-run-all" id="runAllBtn">▶ Run All Analyses</button>
-                    <button class="btn btn-secondary" id="exportBtn" disabled>Export Results</button>
+            <!-- Settings Panel: Upload & Join -->
+            <div class="settings-panel">
+                <div class="settings-panel-header" id="uploadPanelHeader">
+                    <div class="settings-panel-title"><span class="sp-icon">📊</span>Upload Data & Join</div>
+                    <button class="settings-panel-toggle" id="uploadPanelToggle">▼</button>
+                </div>
+                <div class="settings-panel-body" id="uploadPanelBody">
+                    <div class="settings-section">
+                        <div class="upload-zone" id="uploadZone"><div class="upload-icon">📊</div><div class="upload-text">Drop files here</div><div class="upload-subtext">or click to browse (multiple files supported)</div><input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.txt" multiple></div>
+                        <div class="uploaded-files-list" id="uploadedFilesList"></div>
+                    </div>
+                    <div class="settings-section" id="joinSection" style="display:none">
+                        <div class="join-section" id="joinContainer">
+                            <div class="join-header">
+                                <div><div class="join-title">🔗 Combine Your Datasets</div><div class="join-subtitle">Merge two files into one enhanced dataset for richer analysis</div></div>
+                                <button class="join-reset-btn" id="joinResetBtn" style="display:none">Undo Merge</button>
+                            </div>
+                            <div id="joinConfig">
+                                <div class="join-step">
+                                    <div class="join-step-label"><span class="step-num">1</span> Pick the two files to combine</div>
+                                    <div class="join-files-row">
+                                        <div class="form-group"><label class="form-label">Primary File</label><select class="form-select" id="joinLeftFile"></select></div>
+                                        <div class="join-arrow">+</div>
+                                        <div class="form-group"><label class="form-label">File to Add</label><select class="form-select" id="joinRightFile"></select></div>
+                                    </div>
+                                </div>
+                                <div class="join-step">
+                                    <div class="join-step-label"><span class="step-num">2</span> Which column links them together?</div>
+                                    <div class="join-files-row">
+                                        <div class="form-group"><label class="form-label">Column in Primary</label><select class="form-select" id="joinLeftKey"></select></div>
+                                        <div class="join-arrow">=</div>
+                                        <div class="form-group"><label class="form-label">Matching Column</label><select class="form-select" id="joinRightKey"></select></div>
+                                    </div>
+                                    <div class="join-match-hint" id="joinMatchHint">✓ These columns share values — good match!</div>
+                                </div>
+                                <div class="join-step">
+                                    <div class="join-step-label"><span class="step-num">3</span> What happens with non-matching rows?</div>
+                                    <div class="join-type-cards" id="joinTypeCards">
+                                        <div class="join-type-card" data-type="left" data-selected="true">
+                                            <div class="join-type-card-icon">📋 ← 📄</div>
+                                            <div class="join-type-card-name">Keep all primary rows</div>
+                                            <div class="join-type-card-desc">Every row from your primary file stays, even without a match</div>
+                                            <div class="join-type-card-rec">⭐ Recommended</div>
+                                        </div>
+                                        <div class="join-type-card" data-type="inner">
+                                            <div class="join-type-card-icon">📋 ∩ 📄</div>
+                                            <div class="join-type-card-name">Only matching rows</div>
+                                            <div class="join-type-card-desc">Keep only rows that exist in both files</div>
+                                            <div class="join-type-card-rec"></div>
+                                        </div>
+                                        <div class="join-type-card" data-type="full">
+                                            <div class="join-type-card-icon">📋 ∪ 📄</div>
+                                            <div class="join-type-card-name">Keep everything</div>
+                                            <div class="join-type-card-desc">All rows from both files, blanks where no match</div>
+                                            <div class="join-type-card-rec"></div>
+                                        </div>
+                                        <div class="join-type-card" data-type="right">
+                                            <div class="join-type-card-icon">📋 → 📄</div>
+                                            <div class="join-type-card-name">Keep all added rows</div>
+                                            <div class="join-type-card-desc">Every row from the added file stays, even without a match</div>
+                                            <div class="join-type-card-rec"></div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="joinType" value="left">
+                                </div>
+                                <button class="join-btn" id="joinBtn">🔗 Combine Datasets</button>
+                            </div>
+                            <div id="joinStatus"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Settings Panel: Filters & AI & Export -->
+            <div class="settings-panel" id="settingsPanel" style="display:none">
+                <div class="settings-panel-header" id="settingsPanelHeader">
+                    <div class="settings-panel-title"><span class="sp-icon">⚙️</span>Filters, AI & Export</div>
+                    <button class="settings-panel-toggle" id="settingsPanelToggle">▼</button>
+                </div>
+                <div class="settings-panel-body" id="settingsPanelBody">
+                    <div class="settings-section" id="filtersSection" style="display:none">
+                        <label class="form-label" style="font-size:15px;font-weight:700;margin-bottom:12px;display:block">Data Filters</label>
+                        <div class="filters-section" id="filtersContainer"></div>
+                    </div>
+                    <div class="settings-section" id="apiKeySection" style="display:none">
+                        <label class="form-label" style="font-size:15px;font-weight:700;margin-bottom:12px;display:block">AI Settings</label>
+                        <div class="form-group"><label class="form-label">AI Provider</label><select class="form-select" id="aiProvider"><option value="anthropic">Anthropic (Claude)</option><option value="openai">OpenAI (GPT)</option></select></div>
+                        <div class="form-group"><label class="form-label">API Key</label><input type="password" class="form-input" id="apiKeyInput" placeholder="sk-ant-..." style="font-size:12px"><div style="font-size:11px;color:var(--text-light);margin-top:4px">Your key stays in your browser and is never stored.</div></div>
+                    </div>
+                    <div class="settings-section" id="exportSection" style="display:none">
+                        <label class="form-label" style="font-size:15px;font-weight:700;margin-bottom:12px;display:block">Export & Actions</label>
+                        <div class="format-selector"><label class="form-label">Export Format</label><div class="format-options"><div class="format-option" data-format="pptx"><div class="format-icon">📊</div><div class="format-name">PowerPoint</div></div><div class="format-option selected" data-format="pdf"><div class="format-icon">📄</div><div class="format-name">PDF</div></div></div></div>
+                        <button class="btn btn-run-all" id="runAllBtn">▶ Run All Analyses</button>
+                        <button class="btn btn-secondary" id="exportBtn" disabled>Export Results</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
             <div class="content-area" id="contentArea">
                 <div class="empty-state" id="emptyState"><div class="empty-icon">📈</div><div class="empty-text">Upload a file to get started</div></div>
                 <div id="analysisPanelsContainer" style="display:none"></div>
@@ -128,35 +319,267 @@
     </div>
 <script>
 let uploadedData=null,filteredData=null,analyses=[],selectedFormat='pdf',charts={},availableColumns=[],activeFilters={},nextAnalysisId=1;
-const uploadZone=document.getElementById('uploadZone'),fileInput=document.getElementById('fileInput'),fileInfo=document.getElementById('fileInfo'),fileName=document.getElementById('fileName'),fileSize=document.getElementById('fileSize'),exportBtn=document.getElementById('exportBtn'),runAllBtn=document.getElementById('runAllBtn'),emptyState=document.getElementById('emptyState'),formatOptions=document.querySelectorAll('.format-option'),filtersSection=document.getElementById('filtersSection'),filtersContainer=document.getElementById('filtersContainer'),exportSection=document.getElementById('exportSection'),panelsContainer=document.getElementById('analysisPanelsContainer'),addAnalysisBtn=document.getElementById('addAnalysisBtn');
+let datasets=[]; // {id, name, size, data, columns, fileNum}
+let isJoined=false;
+let nextFileNum=1;
+Chart.register(ChartDataLabels);
+const uploadZone=document.getElementById('uploadZone'),fileInput=document.getElementById('fileInput'),exportBtn=document.getElementById('exportBtn'),runAllBtn=document.getElementById('runAllBtn'),emptyState=document.getElementById('emptyState'),formatOptions=document.querySelectorAll('.format-option'),filtersSection=document.getElementById('filtersSection'),filtersContainer=document.getElementById('filtersContainer'),exportSection=document.getElementById('exportSection'),panelsContainer=document.getElementById('analysisPanelsContainer'),addAnalysisBtn=document.getElementById('addAnalysisBtn'),filesList=document.getElementById('uploadedFilesList'),joinSection=document.getElementById('joinSection'),joinLeftFile=document.getElementById('joinLeftFile'),joinRightFile=document.getElementById('joinRightFile'),joinLeftKey=document.getElementById('joinLeftKey'),joinRightKey=document.getElementById('joinRightKey'),joinType=document.getElementById('joinType'),joinBtn=document.getElementById('joinBtn'),joinStatus=document.getElementById('joinStatus'),joinResetBtn=document.getElementById('joinResetBtn'),joinContainer=document.getElementById('joinContainer');
 
 uploadZone.addEventListener('click',()=>fileInput.click());
 document.addEventListener('click',()=>{document.querySelectorAll('.multi-select-trigger.open').forEach(t=>{t.classList.remove('open');t.nextElementSibling.classList.remove('open')})});
+
+// Settings panel collapse/expand
+document.querySelectorAll('.settings-panel-header').forEach(header=>{
+    header.addEventListener('click',()=>{
+        const toggle=header.querySelector('.settings-panel-toggle');
+        const body=header.nextElementSibling;
+        body.classList.toggle('collapsed');
+        toggle.classList.toggle('collapsed');
+    });
+});
+
+// AI provider switch - update placeholder and show/hide proxy
+document.getElementById('aiProvider').addEventListener('change',e=>{
+    const input=document.getElementById('apiKeyInput');
+    if(e.target.value==='openai'){input.placeholder='sk-proj-...'}
+    else{input.placeholder='sk-ant-...'}
+    input.value='';
+});
 uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('dragover')});
 uploadZone.addEventListener('dragleave',()=>uploadZone.classList.remove('dragover'));
-uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('dragover');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0])});
-fileInput.addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
+uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('dragover');[...e.dataTransfer.files].forEach(f=>handleFile(f))});
+fileInput.addEventListener('change',e=>{[...e.target.files].forEach(f=>handleFile(f));e.target.value=''});
 formatOptions.forEach(o=>o.addEventListener('click',()=>{formatOptions.forEach(x=>x.classList.remove('selected'));o.classList.add('selected');selectedFormat=o.dataset.format}));
 
-function handleFile(file){
-    fileName.textContent=file.name;fileSize.textContent=`${(file.size/1024).toFixed(2)} KB`;fileInfo.classList.add('show');
-    const reader=new FileReader();
-    reader.onload=e=>{
-        const data=new Uint8Array(e.target.result),workbook=XLSX.read(data,{type:'array'}),firstSheet=workbook.Sheets[workbook.SheetNames[0]];
-        uploadedData=XLSX.utils.sheet_to_json(firstSheet);
-        if(uploadedData.length>0){
-            availableColumns=Object.keys(uploadedData[0]);setupFilters();
-            filtersSection.style.display='block';exportSection.style.display='block';emptyState.style.display='none';
-            panelsContainer.style.display='block';addAnalysisBtn.style.display='block';
-            Object.values(charts).forEach(c=>c.destroy());charts={};analyses=[];nextAnalysisId=1;
-            setupDefaultAnalyses();renderAllPanels();
+function parseFile(file){
+    return new Promise((resolve,reject)=>{
+        const reader=new FileReader();
+        reader.onload=e=>{
+            const data=new Uint8Array(e.target.result),workbook=XLSX.read(data,{type:'array'}),firstSheet=workbook.Sheets[workbook.SheetNames[0]];
+            const json=XLSX.utils.sheet_to_json(firstSheet);
+            if(json.length>0)resolve(json);else reject('Empty file');
+        };
+        reader.onerror=()=>reject('Read error');
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+async function handleFile(file){
+    try{
+        const json=await parseFile(file);
+        const ds={id:Date.now()+Math.random(),name:file.name,size:file.size,data:json,columns:Object.keys(json[0]),fileNum:nextFileNum++};
+        datasets.push(ds);
+        renderFilesList();
+        updateJoinUI();
+
+        // If first file or single file, activate it immediately
+        if(datasets.length===1||!isJoined){
+            activateDataset(ds.data);
         }
-    };reader.readAsArrayBuffer(file);
+    }catch(err){console.error('File parse error:',err)}
+}
+
+function activateDataset(data,skipPrefix){
+    uploadedData=data;
+    if(uploadedData.length>0){
+        // If single file and not already prefixed from join, prefix columns
+        if(!skipPrefix&&datasets.length===1&&!isJoined){
+            const ds=datasets[0];
+            const origCols=Object.keys(data[0]);
+            const prefix=`[F${ds.fileNum}] `;
+            const needsPrefix=origCols.some(c=>!c.startsWith('[F'));
+            if(needsPrefix){
+                uploadedData=data.map(row=>{
+                    const newRow={};
+                    origCols.forEach(c=>{newRow[prefix+c]=row[c]});
+                    return newRow;
+                });
+            }
+        }
+        availableColumns=Object.keys(uploadedData[0]);setupFilters();
+        document.getElementById('settingsPanel').style.display='block';
+        filtersSection.style.display='block';exportSection.style.display='block';emptyState.style.display='none';
+        document.getElementById('apiKeySection').style.display='block';
+        panelsContainer.style.display='block';addAnalysisBtn.style.display='block';
+        Object.values(charts).forEach(c=>c.destroy());charts={};analyses=[];nextAnalysisId=1;
+        setupDefaultAnalyses();renderAllPanels();
+    }
+}
+
+function renderFilesList(){
+    filesList.innerHTML=datasets.map(ds=>`
+        <div class="uploaded-file-item ${datasets.length===1||isJoined?'active':''}">
+            <span class="file-num-badge">F${ds.fileNum}</span>
+            <div class="file-details">
+                <div class="file-name">${ds.name}</div>
+                <div class="file-meta">${ds.data.length} rows · ${ds.columns.length} columns · ${(ds.size/1024).toFixed(1)} KB</div>
+            </div>
+            <button class="file-remove" data-id="${ds.id}" title="Remove">×</button>
+        </div>
+    `).join('');
+    filesList.querySelectorAll('.file-remove').forEach(btn=>btn.addEventListener('click',e=>{
+        const id=parseFloat(e.target.dataset.id);
+        datasets=datasets.filter(d=>d.id!==id);
+        if(isJoined){isJoined=false;joinContainer.classList.remove('joined');joinStatus.innerHTML='';joinResetBtn.style.display='none'}
+        renderFilesList();updateJoinUI();
+        if(datasets.length===1)activateDataset(datasets[0].data);
+        else if(datasets.length===0){
+            uploadedData=null;availableColumns=[];
+            document.getElementById('settingsPanel').style.display='none';
+            filtersSection.style.display='none';exportSection.style.display='none';
+            panelsContainer.style.display='none';addAnalysisBtn.style.display='none';
+            emptyState.style.display='block';
+        }
+    }));
+}
+
+function updateJoinUI(){
+    if(datasets.length>=2){
+        joinSection.style.display='block';
+        joinLeftFile.innerHTML=datasets.map(ds=>`<option value="${ds.id}">[F${ds.fileNum}] ${ds.name}</option>`).join('');
+        joinRightFile.innerHTML=datasets.map((ds,i)=>`<option value="${ds.id}" ${i===1?'selected':''}>[F${ds.fileNum}] ${ds.name}</option>`).join('');
+        updateJoinKeys();
+    }else{
+        joinSection.style.display='none';
+    }
+}
+
+function updateJoinKeys(){
+    const leftDs=datasets.find(d=>d.id==joinLeftFile.value);
+    const rightDs=datasets.find(d=>d.id==joinRightFile.value);
+    if(leftDs)joinLeftKey.innerHTML=leftDs.columns.map(c=>`<option value="${c}">${c}</option>`).join('');
+    if(rightDs)joinRightKey.innerHTML=rightDs.columns.map(c=>`<option value="${c}">${c}</option>`).join('');
+    // Auto-select matching column names
+    if(leftDs&&rightDs){
+        const match=leftDs.columns.find(c=>rightDs.columns.includes(c));
+        if(match){joinLeftKey.value=match;joinRightKey.value=match}
+    }
+    checkMatchHint();
+}
+
+function checkMatchHint(){
+    const leftDs=datasets.find(d=>d.id==joinLeftFile.value);
+    const rightDs=datasets.find(d=>d.id==joinRightFile.value);
+    const hint=document.getElementById('joinMatchHint');
+    if(!leftDs||!rightDs||!hint)return;
+    const lk=joinLeftKey.value,rk=joinRightKey.value;
+    const leftVals=new Set(leftDs.data.slice(0,100).map(r=>String(r[lk]||'')));
+    const overlap=rightDs.data.slice(0,100).filter(r=>leftVals.has(String(r[rk]||'')));
+    if(overlap.length>0){hint.textContent=`✓ Found matching values — good match!`;hint.classList.add('show')}
+    else{hint.textContent='⚠ No matching values found in the first 100 rows — double-check your columns';hint.classList.add('show');hint.style.color='var(--error)'}
+}
+
+joinLeftKey.addEventListener('change',checkMatchHint);
+joinRightKey.addEventListener('change',checkMatchHint);
+
+joinLeftFile.addEventListener('change',updateJoinKeys);
+joinRightFile.addEventListener('change',updateJoinKeys);
+
+// Join type card selection
+document.querySelectorAll('.join-type-card').forEach(card=>{
+    if(card.dataset.type==='left')card.classList.add('selected');
+    card.addEventListener('click',()=>{
+        document.querySelectorAll('.join-type-card').forEach(c=>c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('joinType').value=card.dataset.type;
+    });
+});
+
+joinBtn.addEventListener('click',()=>{
+    const leftDs=datasets.find(d=>d.id==joinLeftFile.value);
+    const rightDs=datasets.find(d=>d.id==joinRightFile.value);
+    if(!leftDs||!rightDs||leftDs.id===rightDs.id){
+        joinStatus.innerHTML='<div class="join-status error">Please select two different datasets.</div>';return;
+    }
+    const lk=joinLeftKey.value,rk=joinRightKey.value,jt=joinType.value;
+    try{
+        const joined=joinDatasets(leftDs.data,rightDs.data,lk,rk,jt,leftDs.name,rightDs.name);
+        if(joined.length===0){joinStatus.innerHTML='<div class="join-status error">Join produced 0 rows. Check your key fields.</div>';return}
+        isJoined=true;
+        joinContainer.classList.add('joined');
+        joinResetBtn.style.display='block';
+        joinStatus.innerHTML=`<div class="join-status success">✓ Joined: ${joined.length} rows · ${Object.keys(joined[0]).length} columns</div>`;
+        activateDataset(joined,true);
+        renderFilesList();
+    }catch(err){
+        joinStatus.innerHTML=`<div class="join-status error">${err.message||'Join failed.'}</div>`;
+    }
+});
+
+joinResetBtn.addEventListener('click',()=>{
+    isJoined=false;joinContainer.classList.remove('joined');joinStatus.innerHTML='';joinResetBtn.style.display='none';
+    if(datasets.length>0)activateDataset(datasets[0].data);
+    renderFilesList();
+});
+
+function joinDatasets(leftData,rightData,leftKey,rightKey,joinType,leftName,rightName){
+    // Find file numbers
+    const leftDs=datasets.find(d=>d.name===leftName);
+    const rightDs=datasets.find(d=>d.name===rightName);
+    const lp=leftDs?`[F${leftDs.fileNum}] `:'[L] ';
+    const rp=rightDs?`[F${rightDs.fileNum}] `:'[R] ';
+
+    // Build index on right
+    const rightIndex={};
+    rightData.forEach(row=>{
+        const key=String(row[rightKey]||'');
+        if(!rightIndex[key])rightIndex[key]=[];
+        rightIndex[key].push(row);
+    });
+
+    const leftCols=Object.keys(leftData[0]||{});
+    const rightCols=Object.keys(rightData[0]||{}).filter(c=>c!==rightKey);
+
+    // Build column maps with file prefixes
+    const leftColMap={};
+    leftCols.forEach(c=>{leftColMap[c]=lp+c});
+    const rightColMap={};
+    rightCols.forEach(c=>{rightColMap[c]=rp+c});
+    // Join key gets the left prefix
+    const joinKeyName=lp+leftKey;
+
+    const result=[];
+    const usedRightKeys=new Set();
+
+    leftData.forEach(lRow=>{
+        const key=String(lRow[leftKey]||'');
+        const matches=rightIndex[key];
+        if(matches&&matches.length>0){
+            usedRightKeys.add(key);
+            matches.forEach(rRow=>{
+                const merged={};
+                leftCols.forEach(c=>{merged[leftColMap[c]]=lRow[c]});
+                rightCols.forEach(c=>{merged[rightColMap[c]]=rRow[c]});
+                result.push(merged);
+            });
+        }else if(joinType==='left'||joinType==='full'){
+            const merged={};
+            leftCols.forEach(c=>{merged[leftColMap[c]]=lRow[c]});
+            rightCols.forEach(c=>{merged[rightColMap[c]]=null});
+            result.push(merged);
+        }
+    });
+
+    if(joinType==='right'||joinType==='full'){
+        rightData.forEach(rRow=>{
+            const key=String(rRow[rightKey]||'');
+            if(!usedRightKeys.has(key)){
+                const merged={};
+                leftCols.forEach(c=>{merged[leftColMap[c]]=c===leftKey?rRow[rightKey]:null});
+                rightCols.forEach(c=>{merged[rightColMap[c]]=rRow[c]});
+                result.push(merged);
+            }
+        });
+    }
+    return result;
 }
 
 function setupFilters(){
     filtersContainer.innerHTML='';activeFilters={};
     availableColumns.forEach(col=>{
+        // Only show filters for string/date columns, skip purely numeric ones
+        const isNumeric=uploadedData.every(r=>r[col]==null||typeof r[col]==='number'||(!isNaN(parseFloat(r[col]))&&isFinite(r[col])));
+        if(isNumeric)return;
         const isDate=col.toLowerCase().includes('date')||col.toLowerCase().includes('month')||col.toLowerCase().includes('year');
         if(isDate){
             const filterDiv=document.createElement('div');filterDiv.className='filter-group';
@@ -235,32 +658,666 @@ function renderAllPanels(){
         const p=document.createElement('div');p.className='analysis-panel';p.id=`panel-${a.id}`;const c=a.config;
         p.innerHTML=`
             <div class="analysis-panel-header" data-id="${a.id}">
-                <div class="analysis-panel-title"><span class="analysis-panel-number">${idx+1}</span>Analysis ${idx+1}</div>
+                <div class="analysis-panel-title"><span class="analysis-panel-number">${idx+1}</span>${c.panelMode==='summary'?'Executive Summary':'Analysis '+String(idx+1)}</div>
                 <div class="analysis-panel-actions">${analyses.length>1?`<button class="remove-panel-btn" data-id="${a.id}">Remove</button>`:''}<button class="panel-toggle" data-id="${a.id}">▼</button></div>
             </div>
             <div class="analysis-panel-body" id="body-${a.id}">
-                <div class="config-row">
-                    <div class="form-group"><label class="form-label">X-Axis (Categories)</label><select class="form-select config-xaxis" data-id="${a.id}">${availableColumns.map(col=>`<option value="${col}" ${c.xAxis===col?'selected':''}>${col}</option>`).join('')}</select></div>
-                    <div class="form-group"><label class="form-label">Y-Axis (Values)</label><select class="form-select config-yaxis" data-id="${a.id}">${availableColumns.map(col=>`<option value="${col}" ${c.yAxis===col?'selected':''}>${col}</option>`).join('')}</select></div>
-                    <div class="form-group"><label class="form-label">Aggregation</label><select class="form-select config-agg" data-id="${a.id}"><option value="sum" ${c.aggregation==='sum'?'selected':''}>Sum</option><option value="count" ${c.aggregation==='count'?'selected':''}>Count</option><option value="unique" ${c.aggregation==='unique'?'selected':''}>Unique Count</option><option value="average" ${c.aggregation==='average'?'selected':''}>Average</option><option value="min" ${c.aggregation==='min'?'selected':''}>Minimum</option><option value="max" ${c.aggregation==='max'?'selected':''}>Maximum</option></select></div>
-                    <div class="form-group"><label class="form-label">Chart Type</label><select class="form-select config-chart" data-id="${a.id}"><option value="bar" ${c.chartType==='bar'?'selected':''}>Bar</option><option value="line" ${c.chartType==='line'?'selected':''}>Line</option><option value="pie" ${c.chartType==='pie'?'selected':''}>Pie</option><option value="area" ${c.chartType==='area'?'selected':''}>Area</option></select></div>
-                    <div class="form-group"><label class="form-label">Insights</label><select class="form-select config-bullets" data-id="${a.id}"><option value="1" ${c.bullets===1?'selected':''}>1</option><option value="2" ${c.bullets===2?'selected':''}>2</option><option value="3" ${c.bullets===3?'selected':''}>3</option><option value="4" ${c.bullets===4?'selected':''}>4</option><option value="5" ${c.bullets===5?'selected':''}>5</option></select></div>
+                <div class="panel-mode-toggle">
+                    <button class="panel-mode-btn ${(c.panelMode||'analysis')==='analysis'?'active':''}" data-id="${a.id}" data-mode="analysis">📊 Analysis</button>
+                    <button class="panel-mode-btn ${c.panelMode==='summary'?'active':''}" data-id="${a.id}" data-mode="summary">📋 Executive Summary</button>
+                </div>
+                <div class="analysis-config-area" id="config-area-${a.id}" style="display:${c.panelMode==='summary'?'none':'block'}">
+
+                <div class="config-section">
+                    <div class="config-section-label">📊 Primary Axis</div>
+                    <div class="config-section-grid">
+                        <div class="form-group"><label class="form-label">X-Axis (Categories)</label><select class="form-select config-xaxis" data-id="${a.id}">${availableColumns.map(col=>`<option value="${col}" ${c.xAxis===col?'selected':''}>${col}</option>`).join('')}</select></div>
+                        <div class="form-group"><label class="form-label">Y-Axis (Values)</label><select class="form-select config-yaxis" data-id="${a.id}">${availableColumns.map(col=>`<option value="${col}" ${c.yAxis===col&&!c.customKpi?'selected':''}>${col}</option>`).join('')}<option value="__custom_kpi__" ${c.customKpi?'selected':''}>📐 Custom KPI...</option></select></div>
+                        <div class="form-group"><label class="form-label">Aggregation</label><select class="form-select config-agg" data-id="${a.id}"><option value="sum" ${c.aggregation==='sum'?'selected':''}>Sum</option><option value="count" ${c.aggregation==='count'?'selected':''}>Count</option><option value="unique" ${c.aggregation==='unique'?'selected':''}>Unique Count</option><option value="average" ${c.aggregation==='average'?'selected':''}>Average</option><option value="min" ${c.aggregation==='min'?'selected':''}>Minimum</option><option value="max" ${c.aggregation==='max'?'selected':''}>Maximum</option></select></div>
+                        <div class="form-group"><label class="form-label">Chart Type</label><select class="form-select config-chart" data-id="${a.id}"><option value="bar" ${c.chartType==='bar'?'selected':''}>Bar</option><option value="line" ${c.chartType==='line'?'selected':''}>Line</option><option value="pie" ${c.chartType==='pie'?'selected':''}>Pie</option><option value="area" ${c.chartType==='area'?'selected':''}>Area</option></select></div>
+                    </div>
+                    <div class="form-group custom-kpi-container" id="kpi-container-${a.id}" style="display:${c.customKpi?'block':'none'};margin-top:12px">
+                        <div class="custom-kpi-builder">
+                            <label class="form-label">KPI Preset</label>
+                            <select class="form-select kpi-preset" data-id="${a.id}" style="margin-bottom:12px">
+                                <option value="">✏️ Custom formula...</option>
+                                ${getKpiSuggestions().map(s=>`<option value="${s.id}" ${c.kpiPreset===s.id?'selected':''}>${s.name}</option>`).join('')}
+                            </select>
+                            <label class="form-label">KPI Name</label>
+                            <div class="kpi-name-row" style="margin-bottom:12px">
+                                <input class="form-input kpi-name" data-id="${a.id}" placeholder="e.g. Price per Unit" value="${c.customKpiName||''}">
+                            </div>
+                            <label class="form-label">Formula</label>
+                            <div class="kpi-steps" id="kpi-steps-${a.id}">
+                                ${renderKpiSteps(a)}
+                            </div>
+                            <button class="kpi-add-step" data-id="${a.id}">+ Add step</button>
+                            <div class="kpi-preview" id="kpi-preview-${a.id}">${getKpiPreview(a)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <div class="config-section-label">📈 Secondary Axis <span style="font-weight:400;color:var(--text-light);text-transform:none;letter-spacing:0">(optional — for correlation analysis)</span></div>
+                    <div class="config-section-grid">
+                        <div class="form-group"><label class="form-label">2nd Y-Axis</label><select class="form-select config-yaxis2" data-id="${a.id}"><option value="" ${!c.yAxis2&&!c.customKpi2?'selected':''}>— None —</option>${availableColumns.map(col=>`<option value="${col}" ${c.yAxis2===col&&!c.customKpi2?'selected':''}>${col}</option>`).join('')}<option value="__custom_kpi2__" ${c.customKpi2?'selected':''}>📐 Custom KPI...</option></select></div>
+                        <div class="form-group" id="agg2-group-${a.id}" style="display:${c.yAxis2||c.customKpi2?'block':'none'}"><label class="form-label">2nd Aggregation</label><select class="form-select config-agg2" data-id="${a.id}"><option value="sum" ${(c.aggregation2||'sum')==='sum'?'selected':''}>Sum</option><option value="count" ${c.aggregation2==='count'?'selected':''}>Count</option><option value="average" ${c.aggregation2==='average'?'selected':''}>Average</option><option value="min" ${c.aggregation2==='min'?'selected':''}>Minimum</option><option value="max" ${c.aggregation2==='max'?'selected':''}>Maximum</option></select></div>
+                        <div class="form-group" id="chart2-group-${a.id}" style="display:${c.yAxis2||c.customKpi2?'block':'none'}"><label class="form-label">2nd Chart Type</label><select class="form-select config-chart2" data-id="${a.id}"><option value="line" ${(c.chartType2||'line')==='line'?'selected':''}>Line</option><option value="bar" ${c.chartType2==='bar'?'selected':''}>Bar</option><option value="area" ${c.chartType2==='area'?'selected':''}>Area</option></select></div>
+                    </div>
+                    <div class="custom-kpi-container" id="kpi2-container-${a.id}" style="display:${c.customKpi2?'block':'none'};margin-top:12px">
+                        <div class="custom-kpi-builder">
+                            <label class="form-label">KPI Preset</label>
+                            <select class="form-select kpi2-preset" data-id="${a.id}" style="margin-bottom:12px">
+                                <option value="">✏️ Custom formula...</option>
+                                ${getKpiSuggestions().map(s=>`<option value="${s.id}" ${c.kpi2Preset===s.id?'selected':''}>${s.name}</option>`).join('')}
+                            </select>
+                            <label class="form-label">2nd KPI Name</label>
+                            <div class="kpi-name-row" style="margin-bottom:12px">
+                                <input class="form-input kpi2-name" data-id="${a.id}" placeholder="e.g. Cost per Unit" value="${c.customKpi2Name||''}">
+                            </div>
+                            <label class="form-label">Formula</label>
+                            <div class="kpi-steps" id="kpi2-steps-${a.id}">
+                                ${renderKpi2Steps(a)}
+                            </div>
+                            <button class="kpi2-add-step" data-id="${a.id}">+ Add step</button>
+                            <div class="kpi-preview" id="kpi2-preview-${a.id}">${getKpi2Preview(a)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <div class="config-section-label">⚙️ Display & Insights</div>
+                    <div class="config-section-grid">
+                        <div class="form-group" style="display:flex;align-items:end;padding-bottom:4px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);user-select:none"><input type="checkbox" class="config-show-labels" data-id="${a.id}" ${c.showLabels!==false?'checked':''} style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer"> Show data labels</label></div>
+                        <div class="form-group" style="display:flex;align-items:end;padding-bottom:4px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);user-select:none"><input type="checkbox" class="config-same-scale" data-id="${a.id}" ${c.sameScale?'checked':''} style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer"> Same scale for both axes</label></div>
+                        <div class="form-group"><label class="form-label">Auto Insights</label><select class="form-select config-bullets" data-id="${a.id}"><option value="0" ${c.bullets===0?'selected':''}>0</option><option value="1" ${c.bullets===1?'selected':''}>1</option><option value="2" ${c.bullets===2?'selected':''}>2</option><option value="3" ${c.bullets===3?'selected':''}>3</option><option value="4" ${c.bullets===4?'selected':''}>4</option><option value="5" ${c.bullets===5?'selected':''}>5</option></select></div>
+                        <div class="form-group"><label class="form-label">AI Questions</label><select class="form-select config-num-questions" data-id="${a.id}"><option value="0" ${(c.numQuestions||0)===0?'selected':''}>0</option><option value="1" ${c.numQuestions===1?'selected':''}>1</option><option value="2" ${c.numQuestions===2?'selected':''}>2</option><option value="3" ${c.numQuestions===3?'selected':''}>3</option><option value="4" ${c.numQuestions===4?'selected':''}>4</option><option value="5" ${c.numQuestions===5?'selected':''}>5</option></select></div>
+                    </div>
+                </div>
+                <div class="custom-questions-area" id="custom-questions-${a.id}" style="display:${(c.numQuestions||0)>0?'block':'none'}">
+                    ${renderQuestionInputs(a)}
                 </div>
                 <button class="run-analysis-btn" data-id="${a.id}">▶ Run Analysis</button>
                 <hr class="analysis-divider">
                 <div class="result-area" id="result-${a.id}">${a.result?renderResultHTML(a):'<div class="result-empty">Configure options above and click <strong>Run Analysis</strong></div>'}</div>
+                </div>
+                <div class="exec-summary-area" id="summary-area-${a.id}" style="display:${c.panelMode==='summary'?'block':'none'}">
+                    <div class="exec-summary-body">
+                        <div class="exec-summary-note">This panel consolidates insights from all your analyses into a single AI-generated executive summary.</div>
+                        <div class="exec-summary-sources" id="summary-sources-${a.id}">
+                            <div class="exec-summary-sources-title">Source Analyses</div>
+                            ${renderSummarySourceTags(a.id)}
+                        </div>
+                        <div class="exec-summary-config">
+                            <div class="config-row">
+                                <div class="form-group"><label class="form-label">Summary Bullets</label><select class="form-select config-summary-bullets" data-id="${a.id}"><option value="3" ${(c.summaryBullets||5)===3?'selected':''}>3</option><option value="5" ${(c.summaryBullets||5)===5?'selected':''}>5</option><option value="7" ${c.summaryBullets===7?'selected':''}>7</option><option value="10" ${c.summaryBullets===10?'selected':''}>10</option></select></div>
+                            </div>
+                        </div>
+                        <button class="run-analysis-btn run-summary-btn" data-id="${a.id}">📋 Generate Summary</button>
+                        <hr class="analysis-divider">
+                        <div class="result-area" id="summary-result-${a.id}">${a.summaryResult?renderSummaryResultHTML(a):'<div class="result-empty">Run your analyses first, then generate the executive summary</div>'}</div>
+                    </div>
+                </div>
             </div>`;
         panelsContainer.appendChild(p);
-        if(a.result)setTimeout(()=>createChart(`chart-${a.id}`,a.result),0);
+        if(a.result&&(c.panelMode||'analysis')==='analysis')setTimeout(()=>{createChart(`chart-${a.id}`,a.result)},0);
     });
     attachPanelListeners();
 }
 
-function renderResultHTML(a){const r=a.result;return `<div class="result-header"><h3 class="result-title">${r.yAxisLabel}</h3><span class="result-type">${r.config.chartType.toUpperCase()}</span></div><div class="chart-container"><canvas id="chart-${a.id}"></canvas></div><ul class="insights-list">${r.insights.map(i=>`<li class="insight-item">${i}</li>`).join('')}</ul>`}
+function renderResultHTML(a){
+    const r=a.result;
+    const nq=a.config.numQuestions||0;
+
+    // Auto insights
+    let autoHTML='';
+    if(r.insights&&r.insights.length>0){
+        autoHTML=`<ul class="insights-list">${r.insights.map(i=>`<li class="insight-item">${i}</li>`).join('')}</ul>`;
+    }
+
+    // AI question answers
+    let aiHTML='';
+    if(nq>0&&a.qaAnswers&&a.qaAnswers.length>0){
+        aiHTML=a.qaAnswers.map((qa,i)=>{
+            if(!qa.question)return '';
+            return `<div class="qa-answer-block"><div class="qa-answer-question">🤖 Q${i+1}: ${escapeHTML(qa.question)}</div><div class="qa-answer-text">${qa.loading?'<div class="qa-answer-loading"><span class="qa-spinner"></span> Thinking...</div>':escapeHTML(qa.answer)}</div></div>`;
+        }).join('');
+    }
+
+    let corrHTML='';
+    if(r.values2&&r.correlation!==undefined){
+        const corr=r.correlation;
+        const strength=Math.abs(corr)>=0.7?'Strong':Math.abs(corr)>=0.4?'Moderate':'Weak';
+        const direction=corr>0?'positive':'negative';
+        const color=Math.abs(corr)>=0.7?'var(--success)':Math.abs(corr)>=0.4?'var(--accent)':'var(--text-light)';
+        corrHTML=`<div style="background:var(--surface);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;border:1px solid var(--border)"><div style="font-size:32px;font-weight:900;color:${color};font-family:'Work Sans',sans-serif">${corr.toFixed(2)}</div><div><div style="font-size:14px;font-weight:700;color:var(--primary)">${strength} ${direction} correlation</div><div style="font-size:12px;color:var(--text-light)">${r.yAxisLabel} vs ${r.yAxis2Label}</div></div></div>`;
+    }
+
+    return `<div class="result-header"><h3 class="result-title">${r.yAxisLabel}${r.yAxis2Label?' vs '+r.yAxis2Label:''}</h3><span class="result-type">${r.config.chartType.toUpperCase()}</span></div><div class="chart-container"><canvas id="chart-${a.id}"></canvas></div>${corrHTML}${autoHTML}${aiHTML}`;
+}
+
+function renderQuestionInputs(a){
+    const nq=a.config.numQuestions||0;
+    if(nq===0)return '';
+    if(!a.config.customQuestions)a.config.customQuestions=[];
+    let html='<label class="form-label">🤖 Custom Questions</label>';
+    for(let i=0;i<nq;i++){
+        const val=a.config.customQuestions[i]||'';
+        html+=`<div class="question-slot"><span class="question-slot-number">${i+1}</span><input class="form-input custom-question-input" data-id="${a.id}" data-qi="${i}" placeholder="e.g. What drove the biggest change?" value="${escapeHTML(val)}"></div>`;
+    }
+    return html;
+}
+
+function escapeHTML(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function buildDataContext(a){
+    const r=a.result;
+    if(!r)return '';
+    let ctx=`Analysis: ${r.yAxisLabel} by ${r.xAxisLabel}\n`;
+    ctx+=`Chart type: ${r.config.chartType}\nAggregation: ${r.config.aggregation}\n\nData points:\n`;
+    r.labels.forEach((label,i)=>{ctx+=`  ${label}: ${r.values[i].toLocaleString(undefined,{maximumFractionDigits:2})}\n`});
+    const vals=r.values;
+    ctx+=`\nSummary statistics:\n`;
+    ctx+=`  Total: ${vals.reduce((a,b)=>a+b,0).toLocaleString(undefined,{maximumFractionDigits:2})}\n`;
+    ctx+=`  Average: ${(vals.reduce((a,b)=>a+b,0)/vals.length).toLocaleString(undefined,{maximumFractionDigits:2})}\n`;
+    ctx+=`  Min: ${Math.min(...vals).toLocaleString(undefined,{maximumFractionDigits:2})}\n`;
+    ctx+=`  Max: ${Math.max(...vals).toLocaleString(undefined,{maximumFractionDigits:2})}\n`;
+    ctx+=`  Data points: ${vals.length}\n`;
+    return ctx;
+}
+
+async function callAI(prompt,maxTokens){
+    const provider=document.getElementById('aiProvider').value;
+    const apiKey=(document.getElementById('apiKeyInput').value||'').trim();
+    if(!apiKey)throw new Error('Please enter your API key in the Filters, AI & Export panel.');
+
+    if(provider==='openai'){
+        const response=await fetch("https://api.openai.com/v1/chat/completions",{
+            method:"POST",
+            headers:{"Content-Type":"application/json","Authorization":`Bearer ${apiKey}`},
+            body:JSON.stringify({
+                model:"gpt-4o",
+                max_tokens:maxTokens||1000,
+                messages:[{role:"user",content:prompt}]
+            })
+        });
+        if(!response.ok){
+            const err=await response.json().catch(()=>({}));
+            throw new Error(err.error?.message||`OpenAI API error: ${response.status}`);
+        }
+        const data=await response.json();
+        return {content:[{text:data.choices?.[0]?.message?.content||''}]};
+    }else{
+        const response=await fetch("https://api.anthropic.com/v1/messages",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "x-api-key":apiKey,
+                "anthropic-version":"2023-06-01",
+                "anthropic-dangerous-direct-browser-access":"true"
+            },
+            body:JSON.stringify({
+                model:"claude-sonnet-4-20250514",
+                max_tokens:maxTokens||1000,
+                messages:[{role:"user",content:prompt}]
+            })
+        });
+        if(!response.ok){
+            const err=await response.json().catch(()=>({}));
+            throw new Error(err.error?.message||`Anthropic API error: ${response.status}`);
+        }
+        return await response.json();
+    }
+}
+
+async function runCustomQuestions(analysisId){
+    const a=analyses.find(x=>x.id===analysisId);
+    if(!a||!a.result)return;
+    const nq=a.config.numQuestions||0;
+    const questions=a.config.customQuestions||[];
+    if(nq===0)return;
+
+    a.qaAnswers=[];
+    for(let i=0;i<nq;i++){
+        const q=(questions[i]||'').trim();
+        if(!q){a.qaAnswers.push({question:'',answer:'',loading:false});continue;}
+        a.qaAnswers.push({question:q,answer:'',loading:true});
+    }
+
+    // Render loading state
+    const ra=document.getElementById(`result-${a.id}`);
+    if(ra){ra.innerHTML=renderResultHTML(a);createChart(`chart-${a.id}`,a.result)}
+
+    const dataContext=buildDataContext(a);
+
+    // Ask all questions
+    for(let i=0;i<nq;i++){
+        const q=(questions[i]||'').trim();
+        if(!q)continue;
+        try{
+            const data=await callAI(`You are a data analyst. Answer concisely based on the data. Use specific numbers. 2-4 sentences max. No markdown.\n\nChart Data:\n${dataContext}\n\nQuestion: ${q}`,1000);
+            a.qaAnswers[i]={question:q,answer:data.content?.map(c=>c.text||'').join('')||'Could not generate an answer.',loading:false};
+        }catch(err){
+            a.qaAnswers[i]={question:q,answer:err.message||'Could not reach the AI service.',loading:false};
+        }
+        // Progressive render
+        if(ra){ra.innerHTML=renderResultHTML(a);createChart(`chart-${a.id}`,a.result)}
+    }
+}
+
+function renderSummarySourceTags(currentId){
+    const others=analyses.filter(a=>a.id!==currentId&&(a.config.panelMode||'analysis')==='analysis');
+    if(others.length===0)return '<span style="font-size:12px;color:var(--text-light)">No other analyses created yet</span>';
+    return others.map(a=>{
+        const hasData=!!a.result;
+        const label=a.config.customKpi?(a.config.customKpiName||'Custom KPI'):a.config.yAxis;
+        return `<span class="exec-source-tag ${hasData?'has-data':'no-data'}">${hasData?'✓':'○'} ${label}</span>`;
+    }).join('');
+}
+
+function renderSummaryResultHTML(a){
+    if(!a.summaryResult||!a.summaryResult.bullets)return '<div class="result-empty">No summary generated yet</div>';
+    return `<div class="exec-summary-result">${a.summaryResult.bullets.map(b=>`<div class="exec-summary-bullet">${escapeHTML(b)}</div>`).join('')}</div>`;
+}
+
+function collectAllInsights(currentId){
+    let allData=[];
+    analyses.forEach(a=>{
+        if(a.id===currentId||(a.config.panelMode||'analysis')!=='analysis'||!a.result)return;
+        const r=a.result;
+        let section=`Analysis: ${r.yAxisLabel} by ${r.xAxisLabel} (${r.config.chartType}, ${r.config.aggregation})\n`;
+        section+=`Data: ${r.labels.map((l,i)=>`${l}: ${r.values[i].toLocaleString(undefined,{maximumFractionDigits:2})}`).join(', ')}\n`;
+        if(r.insights&&r.insights.length>0)section+=`Auto Insights:\n${r.insights.map(i=>'  • '+i).join('\n')}\n`;
+        if(a.qaAnswers&&a.qaAnswers.length>0){
+            const answered=a.qaAnswers.filter(q=>q.question&&q.answer&&!q.loading);
+            if(answered.length>0)section+=`AI Q&A:\n${answered.map(q=>'  Q: '+q.question+'\n  A: '+q.answer).join('\n')}\n`;
+        }
+        allData.push(section);
+    });
+    return allData.join('\n---\n');
+}
+
+async function runExecutiveSummary(id){
+    const a=analyses.find(x=>x.id===id);
+    if(!a)return;
+    const numBullets=a.config.summaryBullets||5;
+    const ra=document.getElementById(`summary-result-${id}`);
+    ra.innerHTML='<div class="loading-inline"><div class="spinner"></div><div class="loading-text">Generating executive summary...</div></div>';
+
+    const allInsights=collectAllInsights(id);
+    if(!allInsights.trim()){
+        ra.innerHTML='<div class="result-empty">No analyses with results found. Run your analyses first.</div>';
+        return;
+    }
+
+    try{
+        const data=await callAI(`You are a senior business analyst writing an executive summary. Below are multiple data analyses with their insights and Q&A. Synthesize everything into exactly ${numBullets} concise executive-level bullet points that highlight the most important findings, trends, and actionable takeaways. Each bullet should be 1-2 sentences. Write for a C-level audience. Do not use markdown. Return ONLY the bullet points, one per line, with no numbering or bullet characters.\n\n${allInsights}`,2000);
+        const text=data.content?.map(c=>c.text||'').join('')||'';
+        const bullets=text.split('\n').map(b=>b.trim()).filter(b=>b.length>0).slice(0,numBullets);
+        a.summaryResult={bullets};
+    }catch(err){
+        a.summaryResult={bullets:[err.message||'Could not generate executive summary. Please check your connection and try again.']};
+    }
+    ra.innerHTML=renderSummaryResultHTML(a);
+}
+
+function getKpiSuggestions(){
+    const nc=availableColumns.filter(col=>uploadedData&&uploadedData.some(r=>typeof r[col]==='number'));
+    if(nc.length<2)return [];
+    const suggestions=[];
+    const lc=c=>c.toLowerCase().replace(/[\[\]f\d\s]/g,'');
+
+    // Helper: find column matching keywords
+    const find=(keywords)=>nc.find(c=>{const l=lc(c);return keywords.some(k=>l.includes(k))});
+
+    const revenue=find(['revenue','sales','income','amount','total']);
+    const cost=find(['cost','expense','cogs','spend','spending']);
+    const profit=find(['profit','earnings','ebitda','net']);
+    const quantity=find(['quantity','qty','units','volume','count','items','orders']);
+    const price=find(['price','rate','fee','charge','value']);
+    const hours=find(['hours','time','duration']);
+    const target=find(['target','goal','budget','forecast','plan']);
+    const actual=find(['actual','real','achieved']);
+    const headcount=find(['headcount','employees','staff','fte','people']);
+    const clicks=find(['clicks','click','impressions','views','visits']);
+    const conversions=find(['conversions','conversion','signups','leads','subscribers']);
+    const area=find(['area','sqft','sqm','square','size','space']);
+
+    // Generate suggestions based on detected columns
+    if(revenue&&cost)suggestions.push({id:'gross_profit',name:'💰 Gross Profit (Revenue − Cost)',kpiName:'Gross Profit',steps:[{fieldA:revenue,op:'-',fieldB:cost}]});
+    if(revenue&&cost)suggestions.push({id:'profit_margin',name:'📊 Profit Margin % (Revenue − Cost) / Revenue',kpiName:'Profit Margin %',steps:[{fieldA:revenue,op:'-',fieldB:cost},{fieldA:revenue,op:'/',fieldB:revenue,chainOp:'/'}]});
+    if(revenue&&quantity)suggestions.push({id:'rev_per_unit',name:'💵 Revenue per Unit',kpiName:'Revenue per Unit',steps:[{fieldA:revenue,op:'/',fieldB:quantity}]});
+    if(cost&&quantity)suggestions.push({id:'cost_per_unit',name:'🏷️ Cost per Unit',kpiName:'Cost per Unit',steps:[{fieldA:cost,op:'/',fieldB:quantity}]});
+    if(revenue&&headcount)suggestions.push({id:'rev_per_head',name:'👤 Revenue per Employee',kpiName:'Revenue per Employee',steps:[{fieldA:revenue,op:'/',fieldB:headcount}]});
+    if(cost&&headcount)suggestions.push({id:'cost_per_head',name:'👥 Cost per Employee',kpiName:'Cost per Employee',steps:[{fieldA:cost,op:'/',fieldB:headcount}]});
+    if(price&&quantity)suggestions.push({id:'total_value',name:'🧾 Total Value (Price × Quantity)',kpiName:'Total Value',steps:[{fieldA:price,op:'*',fieldB:quantity}]});
+    if(actual&&target)suggestions.push({id:'attainment',name:'🎯 Target Attainment (Actual / Target)',kpiName:'Target Attainment',steps:[{fieldA:actual,op:'/',fieldB:target}]});
+    if(revenue&&target)suggestions.push({id:'rev_attainment',name:'🎯 Revenue vs Target',kpiName:'Revenue vs Target',steps:[{fieldA:revenue,op:'/',fieldB:target}]});
+    if(conversions&&clicks)suggestions.push({id:'conv_rate',name:'📈 Conversion Rate',kpiName:'Conversion Rate',steps:[{fieldA:conversions,op:'/',fieldB:clicks}]});
+    if(revenue&&clicks)suggestions.push({id:'rev_per_click',name:'💸 Revenue per Click',kpiName:'Revenue per Click',steps:[{fieldA:revenue,op:'/',fieldB:clicks}]});
+    if(cost&&clicks)suggestions.push({id:'cost_per_click',name:'🖱️ Cost per Click',kpiName:'Cost per Click',steps:[{fieldA:cost,op:'/',fieldB:clicks}]});
+    if(revenue&&area)suggestions.push({id:'rev_per_sqft',name:'🏢 Revenue per Sq. Ft.',kpiName:'Revenue per Sq. Ft.',steps:[{fieldA:revenue,op:'/',fieldB:area}]});
+    if(revenue&&hours)suggestions.push({id:'rev_per_hour',name:'⏱️ Revenue per Hour',kpiName:'Revenue per Hour',steps:[{fieldA:revenue,op:'/',fieldB:hours}]});
+    if(cost&&hours)suggestions.push({id:'cost_per_hour',name:'⏱️ Cost per Hour',kpiName:'Cost per Hour',steps:[{fieldA:cost,op:'/',fieldB:hours}]});
+
+    // Generic ratio suggestions for any 2 numeric columns if no semantic matches
+    if(suggestions.length===0&&nc.length>=2){
+        for(let i=0;i<Math.min(nc.length,4);i++){
+            for(let j=i+1;j<Math.min(nc.length,4);j++){
+                const a=nc[i],b=nc[j];
+                const clean=c=>c.replace(/\[F\d+\]\s*/g,'');
+                suggestions.push({id:`ratio_${i}_${j}`,name:`📐 ${clean(a)} / ${clean(b)}`,kpiName:`${clean(a)} per ${clean(b)}`,steps:[{fieldA:a,op:'/',fieldB:b}]});
+            }
+        }
+    }
+
+    return suggestions;
+}
+
+function renderKpiSteps(a){
+    const c=a.config;
+    const steps=c.customKpiSteps||[{fieldA:availableColumns[1]||availableColumns[0],op:'/',fieldB:availableColumns[2]||availableColumns[0]}];
+    if(!c.customKpiSteps)c.customKpiSteps=steps;
+    const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+    const colOpts=numCols.map(col=>`<option value="${col}">${col}</option>`).join('');
+    return steps.map((s,i)=>{
+        const opBefore=i>0?`<select class="form-select kpi-op-select kpi-chain-op" data-id="${a.id}" data-step="${i}"><option value="+" ${s.chainOp==='+'?'selected':''}>+</option><option value="-" ${s.chainOp==='-'?'selected':''}>−</option><option value="*" ${s.chainOp==='*'?'selected':''}>×</option><option value="/" ${s.chainOp==='/'?'selected':''}>÷</option></select>`:'';
+        const removeBtn=steps.length>1?`<button class="kpi-remove-step" data-id="${a.id}" data-step="${i}">×</button>`:'';
+        return `${opBefore}<div class="kpi-step"><select class="form-select kpi-field-a" data-id="${a.id}" data-step="${i}">${numCols.map(col=>`<option value="${col}" ${s.fieldA===col?'selected':''}>${col}</option>`).join('')}</select><select class="form-select kpi-op-select kpi-op" data-id="${a.id}" data-step="${i}"><option value="+" ${s.op==='+'?'selected':''}>+</option><option value="-" ${s.op==='-'?'selected':''}>−</option><option value="*" ${s.op==='*'?'selected':''}>×</option><option value="/" ${s.op==='/'?'selected':''}>÷</option></select><select class="form-select kpi-field-b" data-id="${a.id}" data-step="${i}">${numCols.map(col=>`<option value="${col}" ${s.fieldB===col?'selected':''}>${col}</option>`).join('')}</select>${removeBtn}</div>`;
+    }).join('');
+}
+
+function getKpiPreview(a){
+    const c=a.config;
+    const steps=c.customKpiSteps||[];
+    if(steps.length===0)return 'Define your formula above';
+    const name=c.customKpiName||'Result';
+    let formula='';
+    steps.forEach((s,i)=>{
+        if(i>0)formula+=` ${s.chainOp||'+'} `;
+        if(steps.length>1&&i>0)formula+=`(${s.fieldA} ${s.op} ${s.fieldB})`;
+        else formula+=`${s.fieldA} ${s.op} ${s.fieldB}`;
+    });
+    return `${name} = ${formula}`;
+}
+
+function updateKpiPreview(id){
+    const prev=document.getElementById(`kpi-preview-${id}`);
+    const a=analyses.find(x=>x.id==id);
+    if(prev&&a)prev.textContent=getKpiPreview(a);
+}
+
+function renderKpi2Steps(a){
+    const c=a.config;
+    const steps=c.customKpi2Steps||[{fieldA:availableColumns[1]||availableColumns[0],op:'/',fieldB:availableColumns[2]||availableColumns[0]}];
+    if(!c.customKpi2Steps)c.customKpi2Steps=steps;
+    const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+    return steps.map((s,i)=>{
+        const opBefore=i>0?`<select class="form-select kpi-op-select kpi2-chain-op" data-id="${a.id}" data-step="${i}"><option value="+" ${s.chainOp==='+'?'selected':''}>+</option><option value="-" ${s.chainOp==='-'?'selected':''}>−</option><option value="*" ${s.chainOp==='*'?'selected':''}>×</option><option value="/" ${s.chainOp==='/'?'selected':''}>÷</option></select>`:'';
+        const removeBtn=steps.length>1?`<button class="kpi2-remove-step" data-id="${a.id}" data-step="${i}">×</button>`:'';
+        return `${opBefore}<div class="kpi-step"><select class="form-select kpi2-field-a" data-id="${a.id}" data-step="${i}">${numCols.map(col=>`<option value="${col}" ${s.fieldA===col?'selected':''}>${col}</option>`).join('')}</select><select class="form-select kpi-op-select kpi2-op" data-id="${a.id}" data-step="${i}"><option value="+" ${s.op==='+'?'selected':''}>+</option><option value="-" ${s.op==='-'?'selected':''}>−</option><option value="*" ${s.op==='*'?'selected':''}>×</option><option value="/" ${s.op==='/'?'selected':''}>÷</option></select><select class="form-select kpi2-field-b" data-id="${a.id}" data-step="${i}">${numCols.map(col=>`<option value="${col}" ${s.fieldB===col?'selected':''}>${col}</option>`).join('')}</select>${removeBtn}</div>`;
+    }).join('');
+}
+
+function getKpi2Preview(a){
+    const c=a.config;
+    const steps=c.customKpi2Steps||[];
+    if(steps.length===0)return 'Define your formula above';
+    const name=c.customKpi2Name||'Result';
+    let formula='';
+    steps.forEach((s,i)=>{
+        if(i>0)formula+=` ${s.chainOp||'+'} `;
+        if(steps.length>1&&i>0)formula+=`(${s.fieldA} ${s.op} ${s.fieldB})`;
+        else formula+=`${s.fieldA} ${s.op} ${s.fieldB}`;
+    });
+    return `${name} = ${formula}`;
+}
+
+function updateKpi2Preview(id){
+    const prev=document.getElementById(`kpi2-preview-${id}`);
+    const a=analyses.find(x=>x.id==id);
+    if(prev&&a)prev.textContent=getKpi2Preview(a);
+}
 
 function attachPanelListeners(){
     const bind=(sel,prop,tx)=>document.querySelectorAll(sel).forEach(el=>el.addEventListener('change',e=>{const a=analyses.find(a=>a.id==e.target.dataset.id);if(a)a.config[prop]=tx?tx(e.target.value):e.target.value}));
-    bind('.config-xaxis','xAxis');bind('.config-yaxis','yAxis');bind('.config-agg','aggregation');bind('.config-chart','chartType');bind('.config-bullets','bullets',v=>parseInt(v));
+    bind('.config-xaxis','xAxis');bind('.config-agg','aggregation');bind('.config-chart','chartType');bind('.config-bullets','bullets',v=>parseInt(v));
+    bind('.config-agg2','aggregation2');
+    bind('.config-chart2','chartType2');
+
+    // Secondary Y-Axis toggle
+    document.querySelectorAll('.config-yaxis2').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        const val=e.target.value;
+        const kpi2Container=document.getElementById(`kpi2-container-${a.id}`);
+        if(val==='__custom_kpi2__'){
+            a.config.customKpi2=true;a.config.yAxis2='__custom_kpi2__';
+            if(!a.config.customKpi2Steps){
+                const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+                a.config.customKpi2Steps=[{fieldA:numCols[0]||availableColumns[0],op:'/',fieldB:numCols[1]||availableColumns[0]}];
+            }
+            if(kpi2Container)kpi2Container.style.display='block';
+        }else{
+            a.config.customKpi2=false;
+            a.config.yAxis2=val||null;
+            if(kpi2Container)kpi2Container.style.display='none';
+        }
+        const show=!!val;
+        const agg2Group=document.getElementById(`agg2-group-${a.id}`);
+        const chart2Group=document.getElementById(`chart2-group-${a.id}`);
+        if(agg2Group)agg2Group.style.display=show?'block':'none';
+        if(chart2Group)chart2Group.style.display=show?'block':'none';
+    }));
+
+    // Panel mode toggle (Analysis vs Executive Summary)
+    document.querySelectorAll('.panel-mode-btn').forEach(btn=>btn.addEventListener('click',e=>{
+        const id=parseInt(e.target.dataset.id);
+        const mode=e.target.dataset.mode;
+        const a=analyses.find(a=>a.id===id);if(!a)return;
+        a.config.panelMode=mode;
+        renderAllPanels();
+    }));
+
+    // Summary bullets count
+    bind('.config-summary-bullets','summaryBullets',v=>parseInt(v));
+
+    // Generate summary button
+    document.querySelectorAll('.run-summary-btn').forEach(btn=>btn.addEventListener('click',e=>{
+        runExecutiveSummary(parseInt(e.target.dataset.id));
+    }));
+
+    // Show data labels checkbox
+    document.querySelectorAll('.config-show-labels').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        a.config.showLabels=e.target.checked;
+        const chartKey=`chart-${a.id}`;
+        if(charts[chartKey]){
+            charts[chartKey].data.datasets.forEach(ds=>{if(ds.datalabels)ds.datalabels.display=e.target.checked});
+            charts[chartKey].update();
+        }
+    }));
+
+    // Same scale for both axes
+    document.querySelectorAll('.config-same-scale').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        a.config.sameScale=e.target.checked;
+        const chartKey=`chart-${a.id}`;
+        if(charts[chartKey]&&a.result&&a.result.values2){
+            if(e.target.checked){
+                const allVals=[...a.result.values,...a.result.values2];
+                const mn=Math.min(...allVals),mx=Math.max(...allVals);
+                const pad=(mx-mn)*0.05;
+                charts[chartKey].options.scales.y.min=mn-pad;
+                charts[chartKey].options.scales.y.max=mx+pad;
+                charts[chartKey].options.scales.y2.min=mn-pad;
+                charts[chartKey].options.scales.y2.max=mx+pad;
+            }else{
+                delete charts[chartKey].options.scales.y.min;
+                delete charts[chartKey].options.scales.y.max;
+                delete charts[chartKey].options.scales.y2.min;
+                delete charts[chartKey].options.scales.y2.max;
+            }
+            charts[chartKey].update();
+        }
+    }));
+
+    // Number of AI questions
+    document.querySelectorAll('.config-num-questions').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        a.config.numQuestions=parseInt(e.target.value);
+        const container=document.getElementById(`custom-questions-${a.id}`);
+        if(container){
+            container.style.display=a.config.numQuestions>0?'block':'none';
+            container.innerHTML=renderQuestionInputs(a);
+            attachQuestionInputListeners(a.id);
+        }
+    }));
+
+    // Custom question text inputs
+    attachAllQuestionInputListeners();
+
+    // Y-Axis: handle custom KPI toggle
+    document.querySelectorAll('.config-yaxis').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        const container=document.getElementById(`kpi-container-${a.id}`);
+        if(e.target.value==='__custom_kpi__'){
+            a.config.customKpi=true;
+            if(!a.config.customKpiSteps){
+                const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+                a.config.customKpiSteps=[{fieldA:numCols[0]||availableColumns[0],op:'/',fieldB:numCols[1]||availableColumns[0]}];
+            }
+            container.style.display='block';
+        }else{
+            a.config.customKpi=false;
+            a.config.yAxis=e.target.value;
+            container.style.display='none';
+        }
+    }));
+
+    // KPI preset (primary)
+    document.querySelectorAll('.kpi-preset').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        const presetId=e.target.value;
+        a.config.kpiPreset=presetId;
+        if(presetId){
+            const suggestion=getKpiSuggestions().find(s=>s.id===presetId);
+            if(suggestion){
+                a.config.customKpiName=suggestion.kpiName;
+                a.config.customKpiSteps=JSON.parse(JSON.stringify(suggestion.steps));
+                renderAllPanels();
+            }
+        }
+    }));
+
+    // KPI preset (secondary)
+    document.querySelectorAll('.kpi2-preset').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);if(!a)return;
+        const presetId=e.target.value;
+        a.config.kpi2Preset=presetId;
+        if(presetId){
+            const suggestion=getKpiSuggestions().find(s=>s.id===presetId);
+            if(suggestion){
+                a.config.customKpi2Name=suggestion.kpiName;
+                a.config.customKpi2Steps=JSON.parse(JSON.stringify(suggestion.steps));
+                renderAllPanels();
+            }
+        }
+    }));
+
+    // KPI name
+    document.querySelectorAll('.kpi-name').forEach(el=>el.addEventListener('input',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a){a.config.customKpiName=e.target.value;a.config.kpiPreset='';updateKpiPreview(a.id)}
+    }));
+
+    // KPI field A
+    document.querySelectorAll('.kpi-field-a').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpiSteps){a.config.customKpiSteps[parseInt(e.target.dataset.step)].fieldA=e.target.value;a.config.kpiPreset='';updateKpiPreview(a.id)}
+    }));
+
+    // KPI operator
+    document.querySelectorAll('.kpi-op').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpiSteps){a.config.customKpiSteps[parseInt(e.target.dataset.step)].op=e.target.value;a.config.kpiPreset='';updateKpiPreview(a.id)}
+    }));
+
+    // KPI field B
+    document.querySelectorAll('.kpi-field-b').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpiSteps){a.config.customKpiSteps[parseInt(e.target.dataset.step)].fieldB=e.target.value;a.config.kpiPreset='';updateKpiPreview(a.id)}
+    }));
+
+    // KPI chain operator (between steps)
+    document.querySelectorAll('.kpi-chain-op').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpiSteps){a.config.customKpiSteps[parseInt(e.target.dataset.step)].chainOp=e.target.value;updateKpiPreview(a.id)}
+    }));
+
+    // KPI add step
+    document.querySelectorAll('.kpi-add-step').forEach(btn=>btn.addEventListener('click',e=>{
+        const a=analyses.find(a=>a.id==parseInt(e.target.dataset.id));
+        if(a){
+            const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+            if(!a.config.customKpiSteps)a.config.customKpiSteps=[];
+            a.config.customKpiSteps.push({fieldA:numCols[0]||availableColumns[0],op:'+',fieldB:numCols[1]||availableColumns[0],chainOp:'+'});
+            renderAllPanels();
+        }
+    }));
+
+    // KPI remove step
+    document.querySelectorAll('.kpi-remove-step').forEach(btn=>btn.addEventListener('click',e=>{
+        const a=analyses.find(a=>a.id==parseInt(e.target.dataset.id));
+        if(a&&a.config.customKpiSteps){
+            a.config.customKpiSteps.splice(parseInt(e.target.dataset.step),1);
+            renderAllPanels();
+        }
+    }));
+
+    // KPI2 name
+    document.querySelectorAll('.kpi2-name').forEach(el=>el.addEventListener('input',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a){a.config.customKpi2Name=e.target.value;a.config.kpi2Preset='';updateKpi2Preview(a.id)}
+    }));
+    // KPI2 field A
+    document.querySelectorAll('.kpi2-field-a').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpi2Steps){a.config.customKpi2Steps[parseInt(e.target.dataset.step)].fieldA=e.target.value;a.config.kpi2Preset='';updateKpi2Preview(a.id)}
+    }));
+    // KPI2 operator
+    document.querySelectorAll('.kpi2-op').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpi2Steps){a.config.customKpi2Steps[parseInt(e.target.dataset.step)].op=e.target.value;a.config.kpi2Preset='';updateKpi2Preview(a.id)}
+    }));
+    // KPI2 field B
+    document.querySelectorAll('.kpi2-field-b').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpi2Steps){a.config.customKpi2Steps[parseInt(e.target.dataset.step)].fieldB=e.target.value;a.config.kpi2Preset='';updateKpi2Preview(a.id)}
+    }));
+    // KPI2 chain operator
+    document.querySelectorAll('.kpi2-chain-op').forEach(el=>el.addEventListener('change',e=>{
+        const a=analyses.find(a=>a.id==e.target.dataset.id);
+        if(a&&a.config.customKpi2Steps){a.config.customKpi2Steps[parseInt(e.target.dataset.step)].chainOp=e.target.value;updateKpi2Preview(a.id)}
+    }));
+    // KPI2 add step
+    document.querySelectorAll('.kpi2-add-step').forEach(btn=>btn.addEventListener('click',e=>{
+        const a=analyses.find(a=>a.id==parseInt(e.target.dataset.id));
+        if(a){
+            const numCols=availableColumns.filter(col=>uploadedData.some(r=>typeof r[col]==='number'));
+            if(!a.config.customKpi2Steps)a.config.customKpi2Steps=[];
+            a.config.customKpi2Steps.push({fieldA:numCols[0]||availableColumns[0],op:'+',fieldB:numCols[1]||availableColumns[0],chainOp:'+'});
+            renderAllPanels();
+        }
+    }));
+    // KPI2 remove step
+    document.querySelectorAll('.kpi2-remove-step').forEach(btn=>btn.addEventListener('click',e=>{
+        const a=analyses.find(a=>a.id==parseInt(e.target.dataset.id));
+        if(a&&a.config.customKpi2Steps){
+            a.config.customKpi2Steps.splice(parseInt(e.target.dataset.step),1);
+            renderAllPanels();
+        }
+    }));
+
     document.querySelectorAll('.run-analysis-btn').forEach(b=>b.addEventListener('click',e=>runSingleAnalysis(parseInt(e.target.dataset.id))));
     document.querySelectorAll('.remove-panel-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const id=parseInt(e.target.dataset.id);analyses=analyses.filter(a=>a.id!==id);if(charts[`chart-${id}`]){charts[`chart-${id}`].destroy();delete charts[`chart-${id}`]}renderAllPanels();checkExportReady()}));
     document.querySelectorAll('.panel-toggle').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const id=e.target.dataset.id;document.getElementById(`body-${id}`).classList.toggle('collapsed');e.target.classList.toggle('collapsed')}));
@@ -271,19 +1328,158 @@ function runSingleAnalysis(id){
     const a=analyses.find(a=>a.id===id);if(!a||!uploadedData)return;
     const ra=document.getElementById(`result-${id}`);
     ra.innerHTML='<div class="loading-inline"><div class="spinner"></div><div class="loading-text">Analyzing...</div></div>';
-    setTimeout(()=>{const data=applyFilters();a.result=analyzeKPI(data,a.config);ra.innerHTML=renderResultHTML(a);createChart(`chart-${id}`,a.result);checkExportReady()},500);
+    setTimeout(()=>{
+        const data=applyFilters();
+        a.result=analyzeKPI(data,a.config);
+        a.qaAnswers=[];
+        ra.innerHTML=renderResultHTML(a);
+        createChart(`chart-${id}`,a.result);
+        checkExportReady();
+        // Run AI questions if any
+        const nq=a.config.numQuestions||0;
+        if(nq>0&&a.config.customQuestions&&a.config.customQuestions.some(q=>q&&q.trim())){
+            runCustomQuestions(id);
+        }
+    },500);
+}
+
+function attachQuestionInputListeners(id){
+    document.querySelectorAll(`.custom-question-input[data-id="${id}"]`).forEach(el=>{
+        el.addEventListener('input',e=>{
+            const a=analyses.find(a=>a.id==e.target.dataset.id);
+            if(a){
+                if(!a.config.customQuestions)a.config.customQuestions=[];
+                a.config.customQuestions[parseInt(e.target.dataset.qi)]=e.target.value;
+            }
+        });
+    });
+}
+
+function attachAllQuestionInputListeners(){
+    document.querySelectorAll('.custom-question-input').forEach(el=>{
+        el.addEventListener('input',e=>{
+            const a=analyses.find(a=>a.id==e.target.dataset.id);
+            if(a){
+                if(!a.config.customQuestions)a.config.customQuestions=[];
+                a.config.customQuestions[parseInt(e.target.dataset.qi)]=e.target.value;
+            }
+        });
+    });
 }
 
 runAllBtn.addEventListener('click',()=>{if(!uploadedData||analyses.length===0)return;analyses.forEach(a=>runSingleAnalysis(a.id))});
-function checkExportReady(){exportBtn.disabled=!analyses.some(a=>a.result!==null)}
+function checkExportReady(){exportBtn.disabled=!analyses.some(a=>a.result!==null||a.summaryResult)}
 
 function analyzeKPI(data,config){
-    const{xAxis,yAxis,aggregation}=config;let agg={};
-    data.forEach(row=>{let key=row[xAxis];if(xAxis.toLowerCase().includes('date')&&typeof key==='number'){const d=new Date((key-25569)*86400*1000);key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
-    if(!agg[key])agg[key]={values:[],count:0,uniqueValues:new Set()};const v=parseFloat(row[yAxis])||0;agg[key].values.push(v);agg[key].count+=1;agg[key].uniqueValues.add(row[yAxis])});
-    const labels=Object.keys(agg).sort();
-    const values=labels.map(l=>{const a=agg[l];switch(aggregation){case'sum':return a.values.reduce((x,y)=>x+y,0);case'count':return a.count;case'unique':return a.uniqueValues.size;case'average':return a.values.reduce((x,y)=>x+y,0)/a.count;case'min':return Math.min(...a.values);case'max':return Math.max(...a.values);default:return a.values.reduce((x,y)=>x+y,0)}});
-    return{config,labels,values,insights:generateInsights(yAxis,aggregation,labels,values,config.bullets),xAxisLabel:xAxis,yAxisLabel:`${aggregation.charAt(0).toUpperCase()+aggregation.slice(1)} of ${yAxis}`};
+    const{xAxis,aggregation}=config;
+    const isCustom=config.customKpi&&config.customKpiSteps&&config.customKpiSteps.length>0;
+    const yAxis=isCustom?(config.customKpiName||'Custom KPI'):config.yAxis;
+
+    let agg={};
+
+    if(isCustom){
+        const steps=config.customKpiSteps;
+
+        // Helper: evaluate the full formula for a single row
+        function evalRow(row){
+            function evalStep(s){
+                const a=parseFloat(row[s.fieldA])||0;
+                const b=parseFloat(row[s.fieldB])||0;
+                switch(s.op){
+                    case'+':return a+b;case'-':return a-b;case'*':return a*b;case'/':return b!==0?a/b:0;default:return a+b;
+                }
+            }
+            let result=evalStep(steps[0]);
+            for(let i=1;i<steps.length;i++){
+                const stepVal=evalStep(steps[i]);
+                const chainOp=steps[i].chainOp||'+';
+                switch(chainOp){
+                    case'+':result+=stepVal;break;case'-':result-=stepVal;break;case'*':result*=stepVal;break;case'/':result=stepVal!==0?result/stepVal:0;break;
+                }
+            }
+            return result;
+        }
+
+        // Compute per-row, then group
+        data.forEach(row=>{
+            let key=row[xAxis];
+            if(xAxis.toLowerCase().includes('date')&&typeof key==='number'){const d=new Date((key-25569)*86400*1000);key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+            if(!agg[key])agg[key]={values:[],count:0,uniqueValues:new Set()};
+            const v=evalRow(row);
+            agg[key].values.push(v);
+            agg[key].count+=1;
+            agg[key].uniqueValues.add(v);
+        });
+
+        const labels=Object.keys(agg).sort();
+        const values=labels.map(l=>{const a=agg[l];switch(aggregation){case'sum':return a.values.reduce((x,y)=>x+y,0);case'count':return a.count;case'unique':return a.uniqueValues.size;case'average':return a.values.reduce((x,y)=>x+y,0)/a.count;case'min':return Math.min(...a.values);case'max':return Math.max(...a.values);default:return a.values.reduce((x,y)=>x+y,0)}});
+
+        return addSecondaryAxis(data,config,{config,labels,values,insights:generateInsights(yAxis,aggregation,labels,values,config.bullets),xAxisLabel:xAxis,yAxisLabel:`${aggregation.charAt(0).toUpperCase()+aggregation.slice(1)} of ${yAxis}`});
+    }else{
+        data.forEach(row=>{let key=row[xAxis];if(xAxis.toLowerCase().includes('date')&&typeof key==='number'){const d=new Date((key-25569)*86400*1000);key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+        if(!agg[key])agg[key]={values:[],count:0,uniqueValues:new Set()};const v=parseFloat(row[config.yAxis])||0;agg[key].values.push(v);agg[key].count+=1;agg[key].uniqueValues.add(row[config.yAxis])});
+        const labels=Object.keys(agg).sort();
+        const values=labels.map(l=>{const a=agg[l];switch(aggregation){case'sum':return a.values.reduce((x,y)=>x+y,0);case'count':return a.count;case'unique':return a.uniqueValues.size;case'average':return a.values.reduce((x,y)=>x+y,0)/a.count;case'min':return Math.min(...a.values);case'max':return Math.max(...a.values);default:return a.values.reduce((x,y)=>x+y,0)}});
+        return addSecondaryAxis(data,config,{config,labels,values,insights:generateInsights(config.yAxis,aggregation,labels,values,config.bullets),xAxisLabel:xAxis,yAxisLabel:`${aggregation.charAt(0).toUpperCase()+aggregation.slice(1)} of ${config.yAxis}`});
+    }
+}
+
+function addSecondaryAxis(data,config,result){
+    if(!config.yAxis2&&!config.customKpi2)return result;
+    const agg2=config.aggregation2||'sum';
+    const xAxis=config.xAxis;
+    const isCustom2=config.customKpi2&&config.customKpi2Steps&&config.customKpi2Steps.length>0;
+    const yAxis2Label=isCustom2?(config.customKpi2Name||'Custom KPI 2'):config.yAxis2;
+
+    let groups={};
+
+    if(isCustom2){
+        const steps=config.customKpi2Steps;
+        function evalRow2(row){
+            function evalStep(s){
+                const a=parseFloat(row[s.fieldA])||0,b=parseFloat(row[s.fieldB])||0;
+                switch(s.op){case'+':return a+b;case'-':return a-b;case'*':return a*b;case'/':return b!==0?a/b:0;default:return a+b}
+            }
+            let res=evalStep(steps[0]);
+            for(let i=1;i<steps.length;i++){
+                const sv=evalStep(steps[i]),co=steps[i].chainOp||'+';
+                switch(co){case'+':res+=sv;break;case'-':res-=sv;break;case'*':res*=sv;break;case'/':res=sv!==0?res/sv:0;break}
+            }
+            return res;
+        }
+        data.forEach(row=>{
+            let key=row[xAxis];
+            if(xAxis.toLowerCase().includes('date')&&typeof key==='number'){const d=new Date((key-25569)*86400*1000);key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+            if(!groups[key])groups[key]={values:[],count:0};
+            groups[key].values.push(evalRow2(row));
+            groups[key].count+=1;
+        });
+    }else{
+        data.forEach(row=>{
+            let key=row[xAxis];
+            if(xAxis.toLowerCase().includes('date')&&typeof key==='number'){const d=new Date((key-25569)*86400*1000);key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+            if(!groups[key])groups[key]={values:[],count:0};
+            groups[key].values.push(parseFloat(row[config.yAxis2])||0);
+            groups[key].count+=1;
+        });
+    }
+
+    result.values2=result.labels.map(l=>{
+        const g=groups[l];if(!g)return 0;
+        switch(agg2){case'sum':return g.values.reduce((a,b)=>a+b,0);case'count':return g.count;case'average':return g.values.reduce((a,b)=>a+b,0)/g.count;case'min':return Math.min(...g.values);case'max':return Math.max(...g.values);default:return g.values.reduce((a,b)=>a+b,0)}
+    });
+    result.yAxis2Label=`${agg2.charAt(0).toUpperCase()+agg2.slice(1)} of ${yAxis2Label}`;
+    // Compute Pearson correlation
+    const n=result.values.length;
+    if(n>=2){
+        const v1=result.values,v2=result.values2;
+        const mean1=v1.reduce((a,b)=>a+b,0)/n,mean2=v2.reduce((a,b)=>a+b,0)/n;
+        let num=0,den1=0,den2=0;
+        for(let i=0;i<n;i++){const d1=v1[i]-mean1,d2=v2[i]-mean2;num+=d1*d2;den1+=d1*d1;den2+=d2*d2}
+        const denom=Math.sqrt(den1*den2);
+        result.correlation=denom===0?0:num/denom;
+    }
+    return result;
 }
 
 function generateInsights(yAxis,agg,labels,values,nb){
@@ -302,20 +1498,85 @@ function generateInsights(yAxis,agg,labels,values,nb){
 function createChart(canvasId,result){
     const canvas=document.getElementById(canvasId);if(!canvas)return;
     if(charts[canvasId])charts[canvasId].destroy();
-    const ctx=canvas.getContext('2d'),ct=result.config.chartType==='area'?'line':result.config.chartType;
+    const ctx=canvas.getContext('2d');
+    const ct1=result.config.chartType;
+    const ct1Resolved=ct1==='area'?'line':ct1;
+    const hasDual=!!result.values2;
+    const showLabels=result.config.showLabels!==false;
+    const fmt=v=>v>=1000?(v/1000).toFixed(1)+'K':v.toFixed(1);
+
+    const ds1={label:result.yAxisLabel,data:result.values,backgroundColor:ct1==='pie'?['#f59e0b','#8b5cf6','#10b981','#ef4444','#3b82f6','#ec4899','#f97316','#14b8a6']:'#f59e0b40',borderColor:'#f59e0b',borderWidth:3,tension:.4,fill:ct1==='area',yAxisID:'y',datalabels:{display:showLabels,color:'#b45309',font:{weight:'bold',size:11},anchor:ct1==='bar'?'end':'center',align:ct1==='bar'?'end':'center',offset:ct1==='bar'?4:0,formatter:fmt}};
+
+    const datasets=[ds1];
+    if(hasDual){
+        const ct2=result.config.chartType2||'line';
+        const ct2Resolved=ct2==='area'?'line':ct2;
+        datasets.push({label:result.yAxis2Label,data:result.values2,backgroundColor:'#8b5cf640',borderColor:'#8b5cf6',borderWidth:3,tension:.4,type:ct2Resolved,fill:ct2==='area',yAxisID:'y2',order:ct2==='bar'?1:0,datalabels:{display:showLabels,color:'#6d28d9',font:{weight:'bold',size:11},anchor:ct2==='bar'?'end':'center',align:ct2==='bar'?'end':'top',offset:ct2==='bar'?4:4,formatter:fmt}});
+    }
+
+    const scales={};
+    if(ct1!=='pie'){
+        scales.x={grid:{display:false},title:{display:true,text:result.xAxisLabel,font:{size:12,weight:'bold'}}};
+        scales.y={beginAtZero:false,position:'left',grid:{color:'#e2e8f0'},title:{display:true,text:result.yAxisLabel,font:{size:12,weight:'bold'},color:'#f59e0b'},ticks:{color:'#b45309'}};
+        if(hasDual){
+            scales.y2={beginAtZero:false,position:'right',grid:{drawOnChartArea:false},title:{display:true,text:result.yAxis2Label,font:{size:12,weight:'bold'},color:'#8b5cf6'},ticks:{color:'#6d28d9'}};
+            if(result.config.sameScale){
+                const allVals=[...result.values,...result.values2];
+                const mn=Math.min(...allVals),mx=Math.max(...allVals);
+                const pad=(mx-mn)*0.05;
+                scales.y.min=mn-pad;scales.y.max=mx+pad;
+                scales.y2.min=mn-pad;scales.y2.max=mx+pad;
+            }
+        }
+    }
+
     charts[canvasId]=new Chart(ctx,{
-        type:ct,
-        data:{labels:result.labels,datasets:[{label:result.yAxisLabel,data:result.values,backgroundColor:result.config.chartType==='pie'?['#f59e0b','#8b5cf6','#10b981','#ef4444','#3b82f6','#ec4899','#f97316','#14b8a6']:'#f59e0b40',borderColor:'#f59e0b',borderWidth:3,tension:.4,fill:result.config.chartType==='area'}]},
-        options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:result.config.chartType==='pie'},datalabels:{display:true,color:'#1e293b',font:{weight:'bold',size:11},formatter:v=>{if(result.config.aggregation==='count'||result.config.aggregation==='unique')return v.toFixed(0);return v>=1000?(v/1000).toFixed(1)+'K':v.toFixed(0)}}},scales:result.config.chartType!=='pie'?{y:{beginAtZero:false,grid:{color:'#e2e8f0'},title:{display:true,text:result.yAxisLabel,font:{size:12,weight:'bold'}}},x:{grid:{display:false},title:{display:true,text:result.xAxisLabel,font:{size:12,weight:'bold'}}}}:{}}
+        type:ct1Resolved,
+        data:{labels:result.labels,datasets},
+        options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:hasDual||ct1==='pie'},datalabels:{display:false}},scales}
     });
 }
 
-exportBtn.addEventListener('click',()=>{const c=analyses.filter(a=>a.result!==null);if(c.length===0)return;if(selectedFormat==='pdf')exportToPDF(c);else alert('PowerPoint export requires backend processing. Use PDF export for now.')});
+exportBtn.addEventListener('click',()=>{
+    const hasContent=analyses.some(a=>a.result!==null||a.summaryResult);
+    if(!hasContent)return;
+    if(selectedFormat==='pdf')exportToPDF();else alert('PowerPoint export requires backend processing. Use PDF export for now.');
+});
 
-function exportToPDF(completed){
+function exportToPDF(){
     const{jsPDF}=window.jspdf,doc=new jsPDF();
     doc.setFillColor(15,23,42);doc.rect(0,0,210,297,'F');doc.setTextColor(255,255,255);doc.setFontSize(36);doc.text('Data Analysis Report',105,140,{align:'center'});doc.setFontSize(16);doc.text('Generated by DataVista Pro',105,155,{align:'center'});
-    completed.forEach(a=>{const r=a.result;doc.addPage();doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');doc.setTextColor(15,23,42);doc.setFontSize(24);doc.text(r.yAxisLabel,20,30);doc.setFontSize(11);let y=45;r.insights.forEach(t=>{const l=doc.splitTextToSize(`• ${t}`,170);doc.text(l,20,y);y+=l.length*7+5});const cv=document.getElementById(`chart-${a.id}`);if(cv){doc.addImage(cv.toDataURL('image/png'),'PNG',20,y+10,170,100)}});
+
+    analyses.forEach(a=>{
+        if(a.config.panelMode==='summary'){
+            // Executive Summary page
+            if(!a.summaryResult||!a.summaryResult.bullets||a.summaryResult.bullets.length===0)return;
+            doc.addPage();doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');
+            doc.setTextColor(15,23,42);doc.setFontSize(28);doc.text('Executive Summary',20,30);
+            doc.setFontSize(11);let y=50;
+            a.summaryResult.bullets.forEach(b=>{
+                const l=doc.splitTextToSize(`• ${b}`,170);doc.text(l,20,y);y+=l.length*7+6;
+            });
+        }else{
+            // Regular analysis page
+            if(!a.result)return;
+            const r=a.result;
+            doc.addPage();doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');
+            doc.setTextColor(15,23,42);doc.setFontSize(24);doc.text(r.yAxisLabel,20,30);doc.setFontSize(11);let y=45;
+            if(r.insights&&r.insights.length>0){
+                r.insights.forEach(t=>{const l=doc.splitTextToSize(`• ${t}`,170);doc.text(l,20,y);y+=l.length*7+5});
+            }
+            if(a.qaAnswers&&a.qaAnswers.length>0){
+                y+=5;
+                a.qaAnswers.forEach(qa=>{
+                    if(!qa.question||!qa.answer)return;
+                    doc.setFont(undefined,'bold');const ql=doc.splitTextToSize(`Q: ${qa.question}`,170);doc.text(ql,20,y);y+=ql.length*6+3;
+                    doc.setFont(undefined,'normal');const al=doc.splitTextToSize(`A: ${qa.answer}`,170);doc.text(al,20,y);y+=al.length*6+8;
+                });
+            }
+            const cv=document.getElementById(`chart-${a.id}`);if(cv){const imgY=Math.min(y+10,180);doc.addImage(cv.toDataURL('image/png'),'PNG',20,imgY,170,100)}
+        }
+    });
     doc.save('analysis-report.pdf');
 }
 </script>
